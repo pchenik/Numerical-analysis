@@ -3,36 +3,39 @@ from numpy import linalg as LA
 import matplotlib.pyplot as plt
 import random
 
-INF = 1e9 + 7
-eps = 1e-6
-eps2 = 1e-4
+#Constants
+NODES = 5
+DEGREE = 3
 
-
+#Initial and polinom getter functions respectively
 func = lambda x: x ** 2 + np.sin(x)
-P = lambda x, a: sum([a[i] * float(x ** i) for i in range(0, 4)])
+P = lambda x, a: sum([a[i] * float(x ** i) for i in range(0, DEGREE + 1)])
 
-#LEAT squares method begin
-x = np.array([-0.9, -0.4, -0.3, 0.5, 0.7])
-Q = np.full((5, 5), 0, dtype=float)
-for i in range(0, 5):
-    for j in range(0, 4):
+#LEAST squares method begin
+x = np.array([random.uniform(-1, 1) for i in range(NODES)])
+Q = np.full((NODES, NODES), 0, dtype=float)
+for i in range(0, NODES):
+    for j in range(0, DEGREE + 1):
         Q[i][j] = x[i] ** j
-#print(Q)
 H = Q.T.dot(Q)
 y = np.fromiter(map(func, x), float)
 b = Q.T.dot(y)
-for i in range(0, 5):
-    Q[i][4] = i
-solve = LA.solve(Q, b)
+#Dodging from singular case
+for i in range(0, NODES):
+    for j in range(DEGREE + 1, NODES):
+        H[i][j] = i
+
+solve = LA.solve(H, b)
 #end
 
 
-#Lezhandr method:
-cn = np.array([1 / 3, (np.sin(1) - np.cos(1)) / 3, 2 / 3, (28*np.cos(1) - 18 * np.sin(1)) / (2 / 7)])
+#Lezhandr method
+#Definition tbe multipliers of searchable polinom
+cn = np.array([1 / 3, (np.sin(1) - np.cos(1)) * 3, 2 / 3, (28*np.cos(1) - 18 * np.sin(1)) / (2 / 7)])
 #end
 
 
-
+#Initial data
 a = -1
 b = 1
 m = 100
