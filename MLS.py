@@ -32,7 +32,7 @@ solve = LA.solve(H, b)
 #Lezhandr method
 #Definition tbe multipliers of searchable polinom
 cn = np.array([1 / 3, (np.sin(1) - np.cos(1)) * 3, 2 / 3, (28*np.cos(1) - 18 * np.sin(1)) / (2 / 7)])
-#end
+#endjkh
 
 
 #Initial data
@@ -47,7 +47,7 @@ plt.plot(t, s, '-', lw=2)
 plt.title('Plot the legit graph of function')
 plt.grid(True)
 
-s = [P(x, solve) for x in t];
+s = [P(x, solve) for x in t]
 plt.subplot(3, 1, 2)
 plt.plot(t, s, '-', lw=2)
 plt.title('Plot the graph of function based on least squares method')
@@ -56,7 +56,28 @@ plt.grid(True)
 s = [P(x, cn) for x in t]
 plt.subplot(3, 1, 3)
 plt.plot(t, s, '-', lw=2)
-plt.title('Plot the graph of function based on Lezhandr\'s polinom')
+plt.title('Plot the graph of function based on Lezhandr\'s polynom')
 plt.grid(True)
 
 plt.show()
+
+s = [func(x) - P(x, cn) for x in t]
+plt.subplot(2, 1, 1)
+plt.plot(t, s, '-', lw=2)
+plt.title('Substraction plot between the initial function and generalized polynom')
+plt.grid(True)
+
+
+s = [func(x) - P(x, solve) for x in t]
+plt.subplot(2, 1, 2)
+plt.plot(t, s, '-', lw=2)
+plt.title('Substraction plot between the initial function and Lezhandr\'s polynom')
+plt.grid(True)
+
+plt.show()
+
+#Computing the total error
+integral = 7/5 - np.sin(2) / 2
+q2 = [2, 2/3, 2/5, 2/7]
+qn = integral - sum([(cn[i] ** 2) * q2[i] for i in range(0, 4)])
+print(qn)
